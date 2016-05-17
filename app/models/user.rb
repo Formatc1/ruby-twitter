@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :posts, class_name: 'Post', foreign_key: 'author_id'
+  has_many :activities, class_name: 'Activity', foreign_key: 'user_id'
   has_many :active_relationships, class_name: 'Follower',
                                   foreign_key: 'follower_id',
                                   dependent: :destroy
