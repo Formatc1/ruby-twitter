@@ -11,6 +11,7 @@ class Post < ActiveRecord::Base
   belongs_to :reply_to, class_name: 'Post', foreign_key: 'reply_to_id'
   has_many :replies, class_name: 'Post', foreign_key: 'reply_to_id'
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  has_many :activities, class_name: 'Activity', foreign_key: 'post_id'
   has_many :post_tags
   has_many :tags, through: :post_tags
   has_attached_file :image, styles: { medium: ['1920x1080>', :jpg], thumb: ['200x200#', :jpg] }
