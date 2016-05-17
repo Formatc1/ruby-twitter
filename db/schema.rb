@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517092451) do
+ActiveRecord::Schema.define(version: 20160517101122) do
 
   create_table "followers", force: :cascade do |t|
     t.integer  "user_id"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20160517092451) do
   add_index "followers", ["follower_id"], name: "index_followers_on_follower_id"
   add_index "followers", ["user_id"], name: "index_followers_on_user_id"
 
+  create_table "post_tags", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "post_tags", ["post_id"], name: "index_post_tags_on_post_id"
+  add_index "post_tags", ["tag_id"], name: "index_post_tags_on_tag_id"
+
   create_table "posts", force: :cascade do |t|
     t.text     "content"
     t.integer  "reply_to_id"
@@ -33,6 +43,12 @@ ActiveRecord::Schema.define(version: 20160517092451) do
 
   add_index "posts", ["author_id"], name: "index_posts_on_author_id"
   add_index "posts", ["reply_to_id"], name: "index_posts_on_reply_to_id"
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "tag"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
