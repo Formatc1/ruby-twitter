@@ -17,4 +17,8 @@ class Post < ActiveRecord::Base
   has_attached_file :image, styles: { medium: ['1920x1080>', :jpg], thumb: ['200x200#', :jpg] }
   # default_url: "/images/:style/missing.png"
   validates_attachment_content_type :image, content_type: %r{image\/.*}
+
+  after_create do |post|
+    Activity.create(user: User.current, post: post, activity_type: :create_post)
+  end
 end

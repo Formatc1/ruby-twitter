@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
   def create
+    User.current = current_user
+
     @post = Post.new(post_params)
     @post.author = current_user
     respond_to do |format|
