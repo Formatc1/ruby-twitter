@@ -1,3 +1,14 @@
-content: <%= @post.content %><br>
-author: <%= @post.author.visible_name %><br>
-created at: <%= @post.created_at %><br>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <strong><%= post.author.visible_name %></strong>
+      <span>@<%= post.author.username %></span>
+      <span><%= post.created_at.strftime("%B %e %k:%M") %></span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= post.content %>
+    </div>
+  </div>
+</div>
