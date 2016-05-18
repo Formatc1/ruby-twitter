@@ -1,5 +1,8 @@
 # User model
 # Fields:
+# - email (string)
+# - username (string)
+# - visible_name (string)
 # - posts (has_many)
 # - followers (has_many through followers)
 # - following (has_many through followers)
@@ -21,6 +24,9 @@ class User < ActiveRecord::Base
                        source: :user
   has_many :followers, through: :passive_relationships,
                        source: :follower
+
+  validates :email, uniqueness: true, presence: true
+  validates :username, uniqueness: true, presence: true
 
   def follow(other_user)
     active_relationships.create(user_id: other_user.id)
