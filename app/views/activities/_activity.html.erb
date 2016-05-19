@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <strong><%= activity.user.visible_name %></strong>
+      <span><%= activity.activity_type %> at <%= activity.created_at.strftime("%B %e %k:%M") %></span>
+      <strong><%= activity.post.author.visible_name %></strong>
+      <span>@<%= activity.post.author.username %></span>
+      <span><%= activity.post.created_at.strftime("%B %e %k:%M") %></span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= activity.post.content %>
+    </div>
+  </div>
+</div>

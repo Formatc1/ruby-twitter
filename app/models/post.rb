@@ -2,7 +2,6 @@
 # Fields:
 # - content (text)
 # - tags (has_many through PostTag)
-# - user (belongs_to)
 # - replies (has_many)
 # - reply_to (belongs_to)
 # - image (has_attached_file managed by Paperclip)

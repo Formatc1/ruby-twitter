@@ -68,4 +68,44 @@ class User < ActiveRecord::Base
   def self.current=(user)
     Thread.current[:user] = user
   end
+
+  def self.wall(user)
+    # SELECT * FROM "activities"
+    # INNER JOIN users ON activities.user_id = users.id
+    # LEFT JOIN followers ON users.id = followers.user_id AND
+    #   followers.follower_id = 2 OR followers.user_id = 2
+    # LEFT OUTER JOIN activities AS tmp ON
+    #   tmp.post_id = activities.post_id AND
+    #   activities.created_at < tmp.created_at
+    # WHERE (tmp.post_id IS NULL AND ((followers.follower_id = 2 AND
+    #   activities.activity_type IN (3,0,2)) OR (activities.user_id = 2 AND
+    #   activities.activity_type IN (0,2)) OR (followers.user_id = 2 AND
+    #   activities.activity_type IN (1,3))))
+    Activity.includes(:post)
+            .includes(:user)
+            .joins('INNER JOIN users ON activities.user_id = users.id')
+            .joins('LEFT JOIN followers ON users.id = followers.user_id')
+            .joins('LEFT OUTER JOIN activities AS tmp ON
+                      tmp.post_id = activities.post_id AND
+                      activities.created_at < tmp.created_at')
+            .where('tmp.post_id IS NULL AND (
+                    (followers.follower_id = ? AND
+                      activities.activity_type IN (?)) OR
+                    (activities.user_id = ? AND
+                      activities.activity_type IN (?)) OR
+                    (followers.user_id = ? AND
+                      activities.activity_type IN (?)))',
+                   user.id,
+                   [Activity.activity_types[:like],
+                    Activity.activity_types[:create_post],
+                    Activity.activity_types[:share]],
+                   user.id,
+                   [Activity.activity_types[:create_post],
+                    Activity.activity_types[:share]],
+                   user.id,
+                   [Activity.activity_types[:comment],
+                    Activity.activity_types[:like]]
+                  )
+            .order(created_at: :desc)
+  end
 end

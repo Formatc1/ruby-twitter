@@ -4,9 +4,9 @@
   <%= f.submit "Add Tweet" %>
 <% end %>
 
-<% if @posts %>
-  <%= render :partial => "posts/post", :collection => @posts %>
-  <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+<% if @activities %>
+  <%= render :partial => "activities/activity", :collection => @activities %>
+  <%= will_paginate @activities, renderer: BootstrapPagination::Rails %>
 <% end %>
 
 <h1>Home#index</h1>
