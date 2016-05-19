@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
     def shared
       where('activities.activity_type = ?', Activity.activity_types[:share])
     end
+
+    def filter(types)
+      where('activities.activity_type IN (?)', types)
+    end
   end
 
   validates :email, uniqueness: true, presence: true

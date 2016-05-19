@@ -30,6 +30,10 @@ class Post < ActiveRecord::Base
     def who_share
       where('activities.activity_type = ?', Activity.activity_types[:share])
     end
+
+    def filter(types)
+      where('activities.activity_type IN (?)', types)
+    end
   end
 
   has_attached_file :image, styles: { medium: ['1920x1080>', :jpg], thumb: ['200x200#', :jpg] }
