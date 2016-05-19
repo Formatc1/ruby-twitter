@@ -94,6 +94,7 @@ class User < ActiveRecord::Base
                     (activities.user_id = ? AND
                       activities.activity_type IN (?)) OR
                     (followers.user_id = ? AND
+                      activities.user_id != ? AND
                       activities.activity_type IN (?)))',
                    user.id,
                    [Activity.activity_types[:like],
@@ -103,9 +104,11 @@ class User < ActiveRecord::Base
                    [Activity.activity_types[:create_post],
                     Activity.activity_types[:share]],
                    user.id,
+                   user.id,
                    [Activity.activity_types[:comment],
                     Activity.activity_types[:like]]
                   )
             .order(created_at: :desc)
+            .group(:post_id)
   end
 end
