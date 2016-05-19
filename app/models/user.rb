@@ -12,7 +12,6 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  has_many :posts, class_name: 'Post', foreign_key: 'author_id'
   has_many :activities, class_name: 'Activity', foreign_key: 'user_id'
   has_many :active_relationships, class_name: 'Follower',
                                   foreign_key: 'follower_id',
@@ -24,6 +23,24 @@ class User < ActiveRecord::Base
                        source: :user
   has_many :followers, through: :passive_relationships,
                        source: :follower
+
+  has_many :posts, through: :activities, source: :post do
+    def liked
+      where('activities.activity_type = ?', Activity.activity_types[:like])
+    end
+
+    def created
+      where('activities.activity_type = ?', Activity.activity_types[:create_post])
+    end
+
+    def commented
+      where('activities.activity_type = ?', Activity.activity_types[:comment])
+    end
+
+    def shared
+      where('activities.activity_type = ?', Activity.activity_types[:share])
+    end
+  end
 
   validates :email, uniqueness: true, presence: true
   validates :username, uniqueness: true, presence: true
