@@ -6,7 +6,7 @@
   </div>
 </div>
 <div class="row">
-  <% if post.image %>
+  <% if post.image.exists? %>
     <div class="col-xs-3">
       <a href="<%= post.image.url(:original) %>">
         <%= image_tag post.image.url(:thumb) %>
