@@ -46,6 +46,10 @@ class User
   has_and_belongs_to_many :liked_posts, class_name: 'Post',
                                         inverse_of: :liked_by
 
+  validates :email, uniqueness: true, presence: true
+  validates :username, uniqueness: true, presence: true
+  validates :visible_name, presence: true
+
   def follow(user)
     following << user if id != user.id && !following.include?(user)
   end

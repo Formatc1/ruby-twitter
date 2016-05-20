@@ -7,6 +7,8 @@ class Post
   has_and_belongs_to_many :liked_by, class_name: 'User',
                                      inverse_of: :liked_posts
 
+  validates :content, presence: true
+
   before_create do |post|
     post.created_at = Time.now.utc
   end
