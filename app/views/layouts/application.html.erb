@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>RubyTwitter</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -58,9 +57,9 @@
           </li>
           <li>
             <% if user_signed_in? %>
-              <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+              <%= link_to "Log out (#{current_user.email})", destroy_user_session_path, method: :delete %>
             <% else %>
-              <%= link_to "Log in", new_user_session_path %>
+              <%= link_to "Sign in", new_user_session_path%> or <%= link_to "Sign up", new_user_registration_path %>
             <% end %>
           </li>
         </ul>
@@ -81,6 +80,5 @@
 
     <%= yield %>
   </div>
-
 </body>
 </html>

@@ -4,14 +4,10 @@ class HomeController < ApplicationController
 
   def index
     @post = Post.new
-    # @posts = current_user.posts.filter(
-    #   [
-    #     Activity.activity_types[:create_post],
-    #     Activity.activity_types[:share]
-    #   ]
-    # ).paginate(page: params[:page], per_page: 20)
-
-    @activities = User.wall(current_user).paginate(page: params[:page], per_page: 20)
-    # @following_ids = current_user.following.collect(&:id).push(current_user.id)
+    @posts = Post.where(user: current_user.id)
+                 .union
+                 .in(user: current_user.following.collect(&:id))
+                 .order(created_at: :desc)
+                 .paginate(page: params[:page], per_page: 20)
   end
 end

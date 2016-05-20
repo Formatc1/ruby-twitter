@@ -45,8 +45,9 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    bson (4.1.1)
     builder (3.2.2)
-    byebug (9.0.3)
+    byebug (9.0.4)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -67,7 +68,7 @@ GEM
       responders
       warden (~> 1.2.3)
     erubis (2.7.0)
-    execjs (2.6.0)
+    execjs (2.7.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
@@ -88,10 +89,20 @@ GEM
     mime-types-data (3.2016.0221)
     mimemagic (0.3.0)
     mini_portile2 (2.0.0)
-    minitest (5.8.4)
-    multi_json (1.12.0)
+    minitest (5.9.0)
+    mongo (2.2.5)
+      bson (~> 4.0)
+    mongoid (5.1.3)
+      activemodel (~> 4.0)
+      mongo (~> 2.1)
+      origin (~> 2.2)
+      tzinfo (>= 0.3.37)
+    mongoid-paperclip (0.0.10)
+      paperclip (>= 2.3.6, != 4.3.0)
+    multi_json (1.12.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    origin (2.2.0)
     orm_adapter (0.5.0)
     paperclip (4.3.6)
       activemodel (>= 3.2.0)
@@ -141,7 +152,6 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    spring (1.7.1)
     sprockets (3.6.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -169,6 +179,9 @@ GEM
     will_paginate (3.1.0)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
+    will_paginate_mongoid (2.0.1)
+      mongoid
+      will_paginate (~> 3.0)
 
 PLATFORMS
   ruby
@@ -180,17 +193,18 @@ DEPENDENCIES
   devise
   jbuilder (~> 2.0)
   jquery-rails
+  mongoid
+  mongoid-paperclip
   paperclip
   rails (= 4.2.6)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  spring
   sqlite3
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
-  will_paginate
   will_paginate-bootstrap
+  will_paginate_mongoid
 
 BUNDLED WITH
    1.12.3

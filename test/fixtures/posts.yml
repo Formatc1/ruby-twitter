@@ -1,11 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  content: MyText
-  reply_to_id:
-  author_id:
+  content: MyString
 
 two:
-  content: MyText
-  reply_to_id:
-  author_id:
+  content: MyString

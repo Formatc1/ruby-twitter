@@ -1,14 +1,14 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12">
-      <strong><%= post.user.visible_name %></strong>
-      <span>@<%= post.user.username %></span>
-      <span><%= post.created_at.strftime("%B %e %k:%M") %></span>
-    </div>
+<div class="row">
+  <div class="col-xs-12">
+    <strong><%= link_to post.user.visible_name, user_path(post.user.username) %></strong>
+    <span><%= link_to "@#{post.user.username}", user_path(post.user.username) %></span>
+    <span><%= post.created_at.strftime("%B %e %k:%M") %></span>
   </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <%= post.post.content %>
-    </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <p>
+      <%= post.content %>
+    </p>
   </div>
 </div>

@@ -1,10 +1,7 @@
-# Tag model
-# Fields
-# - tag (string)
-# - posts (has_many through PostTag)
-class Tag < ActiveRecord::Base
-  has_many :post_tags
-  has_many :posts, through: :post_tags
+class Tag
+  include Mongoid::Document
+  field :tag, type: String
+  has_and_belongs_to_many :posts
 
-  validates :tag, uniqueness: true
+  validates :tag, uniqueness: true, presence: true
 end
