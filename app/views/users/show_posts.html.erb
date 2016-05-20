@@ -1,0 +1,14 @@
+<div class="container">
+  <% if @posts %>
+    <%= render @posts %>
+    <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+  <% else %>
+    <div class="row">
+      <div class="col-xs-12">
+        <p>
+          There is nothing to show, this user has no posts.
+        </p>
+      </div>
+    </div>
+  <% end %>
+</div>

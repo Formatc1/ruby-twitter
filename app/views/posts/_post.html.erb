@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
-    <strong><%= post.user.visible_name %></strong>
-    <span>@<%= post.user.username %></span>
+    <strong><%= link_to post.user.visible_name, user_path(post.user.username) %></strong>
+    <span><%= link_to "@#{post.user.username}", user_path(post.user.username) %></span>
     <span><%= post.created_at.strftime("%B %e %k:%M") %></span>
   </div>
 </div>
