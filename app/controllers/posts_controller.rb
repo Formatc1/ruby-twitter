@@ -1,14 +1,32 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!
   def create
     @post = Post.new(post_params)
     @post.user = current_user
     respond_to do |format|
       if @post.save
-        format.html { redirect_to '/', notice: 'Post was successfully created.' }
+        format.html { redirect_to root_path, notice: 'Post was successfully created.' }
       else
-        format.html { render '/', notice: 'Post was not created.' }
+        @posts = Post.where(user: current_user.id)
+                     .union
+                     .in(user: current_user.following.collect(&:id))
+                     .order(created_at: :desc)
+                     .paginate(page: params[:page], per_page: 20)
+        format.html { render 'home/index', notice: 'Post was not created.' }
       end
     end
+  end
+
+  def like
+    @post = Post.find(params[:id])
+    current_user.like(@post)
+    redirect_to :back
+  end
+
+  def unlike
+    @post = Post.find(params[:id])
+    current_user.unlike(@post)
+    redirect_to :back
   end
 
   private

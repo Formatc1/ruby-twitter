@@ -25,3 +25,12 @@
     </div>
   <% end %>
 </div>
+<div class="row">
+  <div class="col-xs-12">
+    <% if current_user.likes?(post) %>
+      <%= link_to "Unlike", post_unlike_path(post), method: :delete %>
+    <% else %>
+      <%= link_to "Like", post_like_path(post), method: :post %>
+    <% end %>
+  </div>
+</div>

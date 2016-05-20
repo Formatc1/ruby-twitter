@@ -61,4 +61,16 @@ class User
   def following?(user)
     following.include?(user)
   end
+
+  def like(post)
+    liked_posts << post
+  end
+
+  def unlike(post)
+    liked_posts.delete(post)
+  end
+
+  def likes?(post)
+    liked_posts.include?(post)
+  end
 end
