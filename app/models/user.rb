@@ -108,7 +108,19 @@ class User < ActiveRecord::Base
                    [Activity.activity_types[:comment],
                     Activity.activity_types[:like]]
                   )
-            .order(created_at: :desc)
-            .group(:post_id)
+            .order('activities.created_at DESC')
+            .group('activities.post_id')
+  end
+
+  def like(post)
+    activities.create(post: post, activity_type: :like)
+  end
+
+  def unlike(post)
+    activities.find_by(post_id: post.id, activity_type: :like).destroy
+  end
+
+  def likes?(post)
+    posts.liked.include?(post)
   end
 end
