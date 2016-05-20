@@ -6,9 +6,22 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-xs-12">
-    <p>
-      <%= post.content %>
-    </p>
-  </div>
+  <% if post.image %>
+    <div class="col-xs-3">
+      <a href="<%= post.image.url(:original) %>">
+        <%= image_tag post.image.url(:thumb) %>
+      </a>
+    </div>
+    <div class="col-xs-9">
+      <p>
+        <%= post.content %>
+      </p>
+    </div>
+  <% else %>
+    <div class="col-xs-12">
+      <p>
+        <%= post.content %>
+      </p>
+    </div>
+  <% end %>
 </div>

@@ -1,6 +1,9 @@
-<%= form_for @post, url: {action: 'create', controller: 'posts'} do |f| %>
+<%= form_for @post, url: {action: 'create', controller: 'posts'},
+                    html: { multipart: true } do |f| %>
   <%= f.label :content %>
   <%= f.text_area :content %>
+  <%= f.label :image %>
+  <%= f.file_field :image %>
   <%= f.submit "Add Tweet" %>
 <% end %>
 
