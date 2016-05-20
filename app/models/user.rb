@@ -1,126 +1,36 @@
-# User model
-# Fields:
-# - email (string)
-# - username (string)
-# - visible_name (string)
-# - posts (has_many)
-# - followers (has_many through followers)
-# - following (has_many through followers)
-# - activities (has_many)
-class User < ActiveRecord::Base
+class User
+  include Mongoid::Document
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  has_many :activities, class_name: 'Activity', foreign_key: 'user_id'
-  has_many :active_relationships, class_name: 'Follower',
-                                  foreign_key: 'follower_id',
-                                  dependent: :destroy
-  has_many :passive_relationships, class_name: 'Follower',
-                                   foreign_key: 'user_id',
-                                   dependent: :destroy
-  has_many :following, through: :active_relationships,
-                       source: :user
-  has_many :followers, through: :passive_relationships,
-                       source: :follower
 
-  has_many :posts, through: :activities, source: :post do
-    def liked
-      where('activities.activity_type = ?', Activity.activity_types[:like])
-    end
+  ## Database authenticatable
+  field :email,              type: String, default: ""
+  field :encrypted_password, type: String, default: ""
 
-    def created
-      where('activities.activity_type = ?', Activity.activity_types[:create_post])
-    end
+  ## Recoverable
+  field :reset_password_token,   type: String
+  field :reset_password_sent_at, type: Time
 
-    def commented
-      where('activities.activity_type = ?', Activity.activity_types[:comment])
-    end
+  ## Rememberable
+  field :remember_created_at, type: Time
 
-    def shared
-      where('activities.activity_type = ?', Activity.activity_types[:share])
-    end
+  ## Trackable
+  field :sign_in_count,      type: Integer, default: 0
+  field :current_sign_in_at, type: Time
+  field :last_sign_in_at,    type: Time
+  field :current_sign_in_ip, type: String
+  field :last_sign_in_ip,    type: String
 
-    def filter(types)
-      where('activities.activity_type IN (?)', types)
-    end
-  end
+  ## Confirmable
+  # field :confirmation_token,   type: String
+  # field :confirmed_at,         type: Time
+  # field :confirmation_sent_at, type: Time
+  # field :unconfirmed_email,    type: String # Only if using reconfirmable
 
-  validates :email, uniqueness: true, presence: true
-  validates :username, uniqueness: true, presence: true
-
-  def follow(other_user)
-    active_relationships.create(user_id: other_user.id)
-  end
-
-  def unfollow(other_user)
-    active_relationships.find_by(user_id: other_user.id).destroy
-  end
-
-  def following?(other_user)
-    following.include?(other_user)
-  end
-
-  def self.current
-    Thread.current[:user]
-  end
-
-  def self.current=(user)
-    Thread.current[:user] = user
-  end
-
-  def self.wall(user)
-    # SELECT * FROM "activities"
-    # INNER JOIN users ON activities.user_id = users.id
-    # LEFT JOIN followers ON users.id = followers.user_id AND
-    #   followers.follower_id = 2 OR followers.user_id = 2
-    # LEFT OUTER JOIN activities AS tmp ON
-    #   tmp.post_id = activities.post_id AND
-    #   activities.created_at < tmp.created_at
-    # WHERE (tmp.post_id IS NULL AND ((followers.follower_id = 2 AND
-    #   activities.activity_type IN (3,0,2)) OR (activities.user_id = 2 AND
-    #   activities.activity_type IN (0,2)) OR (followers.user_id = 2 AND
-    #   activities.activity_type IN (1,3))))
-    Activity.includes(:post)
-            .includes(:user)
-            .joins('INNER JOIN users ON activities.user_id = users.id')
-            .joins('LEFT JOIN followers ON users.id = followers.user_id')
-            .joins('LEFT OUTER JOIN activities AS tmp ON
-                      tmp.post_id = activities.post_id AND
-                      activities.created_at < tmp.created_at')
-            .where('tmp.post_id IS NULL AND (
-                    (followers.follower_id = ? AND
-                      activities.activity_type IN (?)) OR
-                    (activities.user_id = ? AND
-                      activities.activity_type IN (?)) OR
-                    (followers.user_id = ? AND
-                      activities.user_id != ? AND
-                      activities.activity_type IN (?)))',
-                   user.id,
-                   [Activity.activity_types[:like],
-                    Activity.activity_types[:create_post],
-                    Activity.activity_types[:share]],
-                   user.id,
-                   [Activity.activity_types[:create_post],
-                    Activity.activity_types[:share]],
-                   user.id,
-                   user.id,
-                   [Activity.activity_types[:comment],
-                    Activity.activity_types[:like]]
-                  )
-            .order('activities.created_at DESC')
-            .group('activities.post_id')
-  end
-
-  def like(post)
-    activities.create(post: post, activity_type: :like)
-  end
-
-  def unlike(post)
-    activities.find_by(post_id: post.id, activity_type: :like).destroy
-  end
-
-  def likes?(post)
-    posts.liked.include?(post)
-  end
+  ## Lockable
+  # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
+  # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
+  # field :locked_at,       type: Time
 end
