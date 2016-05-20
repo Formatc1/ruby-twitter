@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <strong><%= post.user.visible_name %></strong>
+      <span>@<%= post.user.username %></span>
+      <span><%= post.created_at.strftime("%B %e %k:%M") %></span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= post.content %>
+    </div>
+  </div>
+</div>

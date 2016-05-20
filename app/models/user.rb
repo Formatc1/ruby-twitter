@@ -6,8 +6,8 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
   ## Database authenticatable
-  field :email,              type: String, default: ""
-  field :encrypted_password, type: String, default: ""
+  field :email,              type: String, default: ''
+  field :encrypted_password, type: String, default: ''
 
   ## Recoverable
   field :reset_password_token,   type: String
@@ -37,8 +37,24 @@ class User
   field :username,     type: String
   field :visible_name, type: String
 
-  has_and_belongs_to_many :followers, :class_name => 'User', :inverse_of => :following
-  has_and_belongs_to_many :following, :class_name => 'User', :inverse_of => :followers
+  has_and_belongs_to_many :following, class_name: 'User',
+                                      inverse_of: :followers,
+                                      autosave: true
+  has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
   has_many :posts
+  has_and_belongs_to_many :liked_posts, class_name: 'Post',
+                                        inverse_of: :liked_by
+
+  def follow(user)
+    following << user if id != user.id && !following.include?(user)
+  end
+
+  def unfollow(user)
+    following.delete(user)
+  end
+
+  def following?(user)
+    following.include?(user)
+  end
 end
