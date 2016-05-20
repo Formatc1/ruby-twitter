@@ -37,8 +37,8 @@ gem 'devise'
 gem 'paperclip'
 gem 'mongoid-paperclip', require: 'mongoid_paperclip'
 gem 'bootstrap-sass'
-# gem 'will_paginate'
-# gem 'will_paginate-bootstrap'
+gem 'will_paginate_mongoid'
+gem 'will_paginate-bootstrap'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

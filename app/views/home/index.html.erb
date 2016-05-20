@@ -4,7 +4,17 @@
   <%= f.submit "Add Tweet" %>
 <% end %>
 
-<%= render @posts %>
-
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="container">
+  <% if @posts %>
+    <%= render @posts %>
+    <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+  <% else %>
+    <div class="row">
+      <div class="col-xs-12">
+        <p>
+          There is nothing to show, start following some people.
+        </p>
+      </div>
+    </div>
+  <% end %>
+</div>
