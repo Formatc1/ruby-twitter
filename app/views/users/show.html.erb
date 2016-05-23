@@ -1,6 +1,6 @@
 <div class="container">
   <% if @posts %>
-    <%= render @posts %>
+    <%= render @posts, comments: true %>
     <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
   <% else %>
     <div class="row">

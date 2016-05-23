@@ -1,5 +1,21 @@
+<% comments ||= false %>
+<% reply ||= false %>
+
+<% if comments %>
+  <div class="row">
+    <div class="col-xs-12">
+      <% if post.reply_to %>
+        <%= render post.reply_to, reply: true %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col-xs-12">
+    <% if reply %>
+      <span>In reply to:</span>
+    <% end %>
     <strong><%= link_to post.user.visible_name, user_path(post.user.username) %></strong>
     <span><%= link_to "@#{post.user.username}", user_path(post.user.username) %></span>
     <span><%= post.created_at.strftime("%B %e %k:%M") %></span>
@@ -34,3 +50,26 @@
     <% end %>
   </div>
 </div>
+<% if comments %>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="container">
+        <% if post.replies %>
+          <%= render post.replies %>
+        <% end %>
+        <div class="row">
+          <div class="col-xs-12">
+            <%= form_for Post.new, url: post_comment_path(post),
+            html: { multipart: true } do |f| %>
+            <%= f.label :content %>
+            <%= f.text_area :content %>
+            <%= f.label :image %>
+            <%= f.file_field :image %>
+            <%= f.submit "Add comment" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

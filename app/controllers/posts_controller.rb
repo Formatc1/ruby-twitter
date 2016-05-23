@@ -19,6 +19,21 @@ class PostsController < ApplicationController
     end
   end
 
+  def comment
+    parent_post = Post.find(params[:id])
+    @post = Post.new(post_params)
+    @post.reply_to = parent_post
+    @post.user = current_user
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to root_path, notice: 'Comment was successfully created.' }
+      else
+        @posts = posts_visible_for_user
+        format.html { render 'home/index', notice: 'Comment was not created.' }
+      end
+    end
+  end
+
   def like
     @post = Post.find(params[:id])
     current_user.like(@post)
