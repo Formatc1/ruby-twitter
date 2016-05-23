@@ -14,13 +14,13 @@
     </div>
     <div class="col-xs-9">
       <p>
-        <%= post.content %>
+        <%= render_with_hashtags(post.content).html_safe %>
       </p>
     </div>
   <% else %>
     <div class="col-xs-12">
       <p>
-        <%= post.content %>
+        <%= render_with_hashtags(post.content).html_safe %>
       </p>
     </div>
   <% end %>
