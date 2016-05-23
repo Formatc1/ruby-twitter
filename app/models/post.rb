@@ -5,7 +5,7 @@ class Post
   field :content, type: String
   field :created_at, type: DateTime
   belongs_to :user, inverse_of: :posts
-  has_and_belongs_to_many :tags
+  field :tags, type: Array
   has_and_belongs_to_many :liked_by, class_name: 'User',
                                      inverse_of: :liked_posts
 
@@ -18,5 +18,10 @@ class Post
 
   before_create do |post|
     post.created_at = Time.now.utc
+  end
+
+  before_save do |post|
+    tags = post.content.scan(/#(\w+)/).flatten
+    post.tags = tags.to_set.to_a
   end
 end
