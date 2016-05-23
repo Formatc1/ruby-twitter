@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  def show_posts
+  def show
     @posts = User.where(username: params[:username])
                  .first
                  .posts
