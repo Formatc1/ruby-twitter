@@ -18,7 +18,7 @@
     <% end %>
     <strong><%= link_to post.user.visible_name, user_path(post.user.username) %></strong>
     <span><%= link_to "@#{post.user.username}", user_path(post.user.username) %></span>
-    <span><%= post.created_at.strftime("%B %e %k:%M") %></span>
+    <span><%= display_date(post.created_at) %></span>
   </div>
 </div>
 <div class="row">

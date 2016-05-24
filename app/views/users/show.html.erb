@@ -1,14 +1,36 @@
 <div class="container">
-  <% if @posts %>
-    <%= render @posts, comments: true %>
-    <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
-  <% else %>
-    <div class="row">
-      <div class="col-xs-12">
-        <p>
-          There is nothing to show, this user has no posts.
-        </p>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-xs-12">
+            <div>
+              <strong><%= current_user.visible_name %></strong>
+            </div>
+            <div>
+              <span>@<%= current_user.username %></span>
+            </div>
+            <div>
+              <span>Joined at: <%= current_user.created_at.strftime("%B %Y") %></span>
+            </div>
+
+          </div>
+          <div class="col-md-9 col-xs-12">
+            <% if @posts %>
+            <%= render @posts, comments: true %>
+            <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+            <% else %>
+            <div class="row">
+              <div class="col-xs-12">
+                <p>
+                  There is nothing to show, this user has no posts.
+                </p>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
-  <% end %>
+  </div>
 </div>

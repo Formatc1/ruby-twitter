@@ -1,9 +1,9 @@
 class Post
   include Mongoid::Document
+  include Mongoid::Timestamps::Created
   include Mongoid::Paperclip
 
   field :content, type: String
-  field :created_at, type: DateTime
   belongs_to :user, inverse_of: :posts
   field :tags, type: Array
   has_and_belongs_to_many :liked_by, class_name: 'User',
@@ -17,10 +17,6 @@ class Post
   }
   validates_attachment_content_type :image, content_type: %r{image\/.*}
   validates :content, presence: true
-
-  before_create do |post|
-    post.created_at = Time.now.utc
-  end
 
   before_save do |post|
     tags = post.content.scan(/#(\w+)/).flatten
