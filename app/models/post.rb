@@ -18,6 +18,8 @@ class Post
   validates_attachment_content_type :image, content_type: %r{image\/.*}
   validates :content, presence: true
 
+  default_scope -> { order(created_at: :desc) }
+
   before_save do |post|
     tags = post.content.scan(/#(\w+)/).flatten
     post.tags = tags.to_set.to_a
