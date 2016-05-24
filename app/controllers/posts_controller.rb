@@ -46,6 +46,9 @@ class PostsController < ApplicationController
     redirect_to :back
   end
 
+  def search
+  end
+
   private
 
   def post_params

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'home', to: 'posts#index'
   get 'user/:username', to: 'users#show', as: 'user'
   get 'tag/:tag', to: 'tags#show', as: 'tag'
+  get 'search', to: 'posts#search', as: 'search'
   post 'posts/create'
   post 'posts/create/:id', to: 'posts#comment', as: 'post_comment'
   post 'posts/like/:id', to: 'posts#like', as: 'post_like'
