@@ -47,6 +47,16 @@ class PostsController < ApplicationController
   end
 
   def search
+    query = params[:query]
+    case query[0]
+    when '#'
+      return redirect_to tag_path(query[1..-1])
+    when '@'
+      return redirect_to user_path(query[1..-1])
+    else
+      return @posts = Post.for_js("this.content.match(/#{params[:query]}/)")
+                          .paginate(page: params[:page], per_page: 20)
+    end
   end
 
   private
