@@ -22,6 +22,10 @@
                 <% end %>
               <% end %>
             </div>
+            <div>
+              Following: <%= @user.following.count %>
+              Followers: <%= @user.followers.count %>
+            </div>
 
           </div>
           <div class="col-md-9 col-xs-12">
