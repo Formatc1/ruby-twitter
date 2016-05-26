@@ -48,6 +48,9 @@
     <% else %>
       <%= link_to "Like", post_like_path(post), method: :post %>
     <% end %>
+    <% if current_user == post.user %>
+      <%= link_to "Delete", post_delete_path(post), method: :delete %>
+    <% end %>
   </div>
 </div>
 <% if comments %>

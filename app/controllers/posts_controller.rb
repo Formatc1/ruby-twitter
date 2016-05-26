@@ -19,6 +19,12 @@ class PostsController < ApplicationController
     end
   end
 
+  def destroy
+    @post = Post.find(params[:id])
+    @post.destroy if @post == current_user
+    redirect_to :back
+  end
+
   def comment
     parent_post = Post.find(params[:id])
     @post = Post.new(post_params)
