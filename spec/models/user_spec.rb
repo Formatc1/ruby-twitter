@@ -22,6 +22,7 @@ RSpec.describe User, type: :model do
 
     expect(@user1.following).to eq([@user2])
     expect(@user2.followers).to eq([@user1])
+    @user1.unfollow(@user2)
   end
 
   it 'unfollow other user' do
