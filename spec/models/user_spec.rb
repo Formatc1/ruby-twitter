@@ -10,6 +10,9 @@ RSpec.describe User, type: :model do
                           password: 'testtest',
                           username: 'user2',
                           visible_name: 'user2')
+
+    @post1 = Post.create!(content: 'ghs',
+                          user: @user1)
   end
 
   after(:all) do
@@ -31,5 +34,19 @@ RSpec.describe User, type: :model do
 
     expect(@user1.following).to eq([])
     expect(@user2.followers).to eq([])
+  end
+
+  it 'like post' do
+    @user1.like(@post1)
+
+    expect(@user1.likes?(@post1)).to eq(true)
+    @user1.unlike(@post1)
+  end
+
+  it 'unlike post' do
+    @user1.like(@post1)
+    @user1.unlike(@post1)
+
+    expect(@user1.likes?(@post1)).to eq(false)
   end
 end
