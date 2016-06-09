@@ -40,6 +40,9 @@ gem 'bootstrap-sass'
 gem 'will_paginate_mongoid'
 gem 'will_paginate-bootstrap'
 
+#for Windows
+gem 'tzinfo-data'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
