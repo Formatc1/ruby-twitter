@@ -85,4 +85,13 @@ RSpec.describe User, type: :model do
                    visible_name: Faker::Name.name)
     end.to raise_error(Mongoid::Errors::Validations)
   end
+
+  it 'should not create second user with the same username' do
+    expect do
+      User.create!(email: Faker::Internet.safe_email,
+                   password: Faker::Internet.password(7, 10),
+                   username: @user1.username,
+                   visible_name: Faker::Name.name)
+    end.to raise_error(Mongoid::Errors::Validations)
+  end
 end
