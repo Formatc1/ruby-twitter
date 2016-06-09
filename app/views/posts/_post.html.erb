@@ -1,78 +1,83 @@
 <% comments ||= false %>
 <% reply ||= false %>
 
-<% if comments %>
-  <div class="row">
-    <div class="col-xs-12">
-      <% if post.reply_to %>
-        <%= render post.reply_to, reply: true %>
-      <% end %>
-    </div>
-  </div>
-<% end %>
-
-<div class="row">
-  <div class="col-xs-12">
-    <% if reply %>
+<div class="panel panel-default">
+  <% if post.reply_to %>
+    <div class="panel-heading">
       <span>In reply to:</span>
-    <% end %>
+      <strong><%= link_to post.reply_to.user.visible_name, user_path(post.reply_to.user.username) %></strong>
+      <span><%= link_to "@#{post.reply_to.user.username}", user_path(post.reply_to.user.username) %></span>
+      <span><%= display_date(post.reply_to.created_at) %></span>
+      <div>
+        <% if post.reply_to.image.exists? %>
+          <div class="pull-left">
+            <a href="<%= post.reply_to.image.url(:original) %>">
+              <%= image_tag post.reply_to.image.url(:thumb) %>
+            </a>
+          </div>
+          <div class="pull-left tweet-margin">
+            <p>
+              <%= render_with_hashtags(post.reply_to.content).html_safe %>
+            </p>
+          </div>
+          <div class="clearfix">
+
+          </div>
+        <% else %>
+          <div class="tweet-margin">
+            <p>
+              <%= render_with_hashtags(post.reply_to.content).html_safe %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="panel-body bg-info">
     <strong><%= link_to post.user.visible_name, user_path(post.user.username) %></strong>
     <span><%= link_to "@#{post.user.username}", user_path(post.user.username) %></span>
     <span><%= display_date(post.created_at) %></span>
+    <div>
+      <% if post.image.exists? %>
+        <div class="pull-left">
+          <a href="<%= post.image.url(:original) %>">
+            <%= image_tag post.image.url(:thumb) %>
+          </a>
+        </div>
+        <div class="pull-left tweet-margin">
+          <p>
+            <%= render_with_hashtags(post.content).html_safe %>
+          </p>
+        </div>
+        <div class="clearfix">
+
+        </div>
+      <% else %>
+        <div class="tweet-margin">
+          <p>
+            <%= render_with_hashtags(post.content).html_safe %>
+          </p>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
-<div class="row">
-  <% if post.image.exists? %>
-    <div class="col-xs-3">
-      <a href="<%= post.image.url(:original) %>">
-        <%= image_tag post.image.url(:thumb) %>
-      </a>
-    </div>
-    <div class="col-xs-9">
-      <p>
-        <%= render_with_hashtags(post.content).html_safe %>
-      </p>
-    </div>
-  <% else %>
-    <div class="col-xs-12">
-      <p>
-        <%= render_with_hashtags(post.content).html_safe %>
-      </p>
-    </div>
+  <% if post.replies %>
+    <ul class="list-group">
+      <%= render partial: 'posts/reply', collection: post.replies %>
+      <li class="list-group-item">
+        <%= form_for Post.new, url: post_comment_path(post),
+          html: { multipart: true } do |f| %>
+          <div class="form-group no-bottom-margin">
+            <%= f.text_area :content, class: 'form-control', placeholder: 'Your tweet' %>
+          </div>
+          <div class="form-group no-bottom-margin">
+            <%= f.submit "Add comment", class: 'btn btn-primary pull-right' %>
+            <%= f.label :image, 'Add image', class: 'btn btn-default btn-file pull-right' %>
+            <%= f.file_field :image, class: 'hidden' %>
+            <div class="clearfix"></div>
+          </div>
+        <% end %>
+      </li>
+    </ul>
   <% end %>
 </div>
-<div class="row">
-  <div class="col-xs-12">
-    <% if current_user.likes?(post) %>
-      <%= link_to "Unlike", post_unlike_path(post), method: :delete %>
-    <% else %>
-      <%= link_to "Like", post_like_path(post), method: :post %>
-    <% end %>
-    <% if current_user == post.user %>
-      <%= link_to "Delete", post_delete_path(post), method: :delete %>
-    <% end %>
-  </div>
-</div>
-<% if comments %>
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="container">
-        <% if post.replies %>
-          <%= render post.replies %>
-        <% end %>
-        <div class="row">
-          <div class="col-xs-12">
-            <%= form_for Post.new, url: post_comment_path(post),
-            html: { multipart: true } do |f| %>
-            <%= f.label :content %>
-            <%= f.text_area :content %>
-            <%= f.label :image %>
-            <%= f.file_field :image %>
-            <%= f.submit "Add comment" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>

@@ -1,0 +1,28 @@
+<li class="list-group-item">
+  <strong><%= link_to reply.user.visible_name, user_path(reply.user.username) %></strong>
+  <span><%= link_to "@#{reply.user.username}", user_path(reply.user.username) %></span>
+  <span><%= display_date(reply.created_at) %></span>
+  <div>
+    <% if reply.image.exists? %>
+      <div class="pull-left">
+        <a href="<%= reply.image.url(:original) %>">
+          <%= image_tag reply.image.url(:thumb) %>
+        </a>
+      </div>
+      <div class="pull-left tweet-margin">
+        <p>
+          <%= render_with_hashtags(reply.content).html_safe %>
+        </p>
+      </div>
+      <div class="clearfix">
+
+      </div>
+    <% else %>
+      <div class="tweet-margin">
+        <p>
+          <%= render_with_hashtags(reply.content).html_safe %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+</li>
