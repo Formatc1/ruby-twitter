@@ -2,22 +2,23 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   before(:all) do
-    @user1 = User.create!(email: 'user1@example.com',
-                          password: 'testtest',
-                          username: 'user1',
-                          visible_name: 'user1')
-    @user2 = User.create!(email: 'user2@example.com',
-                          password: 'testtest',
-                          username: 'user2',
-                          visible_name: 'user2')
+    @user1 = User.create!(email: Faker::Internet.safe_email,
+                          password: Faker::Internet.password(7, 10),
+                          username: Faker::Internet.user_name,
+                          visible_name: Faker::Name.name)
+    @user2 = User.create!(email: Faker::Internet.safe_email,
+                          password: Faker::Internet.password(7, 10),
+                          username: Faker::Internet.user_name,
+                          visible_name: Faker::Name.name)
 
-    @post1 = Post.create!(content: 'ghs',
+    @post1 = Post.create!(content: Faker::Lorem.paragraph,
                           user: @user1)
   end
 
   after(:all) do
     @user1.destroy
     @user2.destroy
+    @post1.destroy
   end
 
   it 'follow other user' do
@@ -39,7 +40,7 @@ RSpec.describe User, type: :model do
   it 'like post' do
     @user1.like(@post1)
 
-    expect(@user1.likes?(@post1)).to eq(true)
+    expect(@user1.likes?(@post1)).to be true
     @user1.unlike(@post1)
   end
 
@@ -47,6 +48,41 @@ RSpec.describe User, type: :model do
     @user1.like(@post1)
     @user1.unlike(@post1)
 
-    expect(@user1.likes?(@post1)).to eq(false)
+    expect(@user1.likes?(@post1)).to be false
+  end
+
+  it 'should have strong password' do
+    expect do
+      User.create!(email: Faker::Internet.safe_email,
+                   password: Faker::Internet.password(1, 5),
+                   username: Faker::Internet.user_name,
+                   visible_name: Faker::Name.name)
+    end.to raise_error(Mongoid::Errors::Validations)
+  end
+
+  it 'should have correct email address' do
+    expect do
+      User.create!(email: 'wrong_email',
+                   password: Faker::Internet.password(7, 10),
+                   username: Faker::Internet.user_name,
+                   visible_name: Faker::Name.name)
+    end.to raise_error(Mongoid::Errors::Validations)
+  end
+
+  it 'user should have not empty username' do
+    expect do
+      User.create!(email: Faker::Internet.safe_email,
+                   password: Faker::Internet.password(7, 10),
+                   visible_name: Faker::Name.name)
+    end.to raise_error(Mongoid::Errors::Validations)
+  end
+
+  it 'should not create second user with the same email' do
+    expect do
+      User.create!(email: @user1.email,
+                   password: Faker::Internet.password(7, 10),
+                   username: Faker::Internet.user_name,
+                   visible_name: Faker::Name.name)
+    end.to raise_error(Mongoid::Errors::Validations)
   end
 end
