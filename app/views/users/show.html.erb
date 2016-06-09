@@ -1,50 +1,43 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 col-xs-12">
-            <div>
-              <strong><%= @user.visible_name %></strong>
-            </div>
-            <div>
-              <span>@<%= @user.username %></span>
-            </div>
-            <div>
-              <span>Joined at: <%= @user.created_at.strftime("%B %Y") %></span>
-            </div>
-            <div>
-              <% if current_user != @user %>
-                <% if current_user.following?(@user) %>
-                  <%= link_to "Unfollow", unfollow_path(@user.username), method: :delete %>
-                <% else %>
-                  <%= link_to "Follow", follow_path(@user.username), method: :post %>
-                <% end %>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="row">
+      <div class="col-md-3 col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="visible-name"><%= @user.visible_name %></h3>
+            <span>@<%= @user.username %></span>
+          </div>
+          <div class="panel-content user-info">
+            <div>Joined at: <%= @user.created_at.strftime("%B %Y") %></div>
+            <div>Following: <%= @user.following.count %></div>
+            <div>Followers: <%= @user.followers.count %></div>
+          </div>
+          <% if current_user != @user %>
+            <div class="panel-footer">
+              <% if current_user.following?(@user) %>
+                <%= link_to "Unfollow", unfollow_path(@user.username), method: :delete %>
+              <% else %>
+                <%= link_to "Follow", follow_path(@user.username), method: :post %>
               <% end %>
             </div>
-            <div>
-              Following: <%= @user.following.count %>
-              Followers: <%= @user.followers.count %>
-            </div>
-
-          </div>
-          <div class="col-md-9 col-xs-12">
-            <% if @posts %>
-            <%= render @posts, comments: true %>
-            <div class="text-center">
-              <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
-            </div>
-            <% else %>
-            <div class="row">
-              <div class="col-xs-12">
-                <p>
-                  There is nothing to show, this user has no posts.
-                </p>
-              </div>
-            </div>
-            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-md-9 col-xs-12">
+        <% if @posts %>
+        <%= render @posts, comments: true %>
+        <div class="text-center">
+          <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+        </div>
+        <% else %>
+        <div class="row">
+          <div class="col-xs-12">
+            <p>
+              There is nothing to show, this user has no posts.
+            </p>
           </div>
         </div>
+        <% end %>
       </div>
     </div>
   </div>

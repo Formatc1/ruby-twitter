@@ -1,16 +1,14 @@
-<div class="container">
-  <% if @posts %>
-    <%= render @posts, comments: true %>
-    <div class="text-center">
-      <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+<% if @posts %>
+  <%= render @posts %>
+  <div class="text-center">
+    <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-xs-12">
+      <p>
+        There is nothing to show, there is no posts with this tag.
+      </p>
     </div>
-  <% else %>
-    <div class="row">
-      <div class="col-xs-12">
-        <p>
-          There is nothing to show, there is no posts with this tag.
-        </p>
-      </div>
-    </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
