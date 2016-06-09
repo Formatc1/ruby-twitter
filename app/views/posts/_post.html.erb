@@ -1,6 +1,3 @@
-<% comments ||= false %>
-<% reply ||= false %>
-
 <div class="panel panel-default">
   <% if post.reply_to %>
     <div class="panel-heading">
@@ -68,7 +65,7 @@
         <%= form_for Post.new, url: post_comment_path(post),
           html: { multipart: true } do |f| %>
           <div class="form-group no-bottom-margin">
-            <%= f.text_area :content, class: 'form-control', placeholder: 'Your tweet' %>
+            <%= f.text_area :content, class: 'form-control', placeholder: 'Your comment' %>
           </div>
           <div class="form-group no-bottom-margin">
             <%= f.submit "Add comment", class: 'btn btn-primary pull-right' %>

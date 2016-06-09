@@ -61,7 +61,7 @@ class PostsController < ApplicationController
       return redirect_to user_path(query[1..-1])
     else
       return @posts = Post.for_js("this.content.match(/#{params[:query]}/)")
-                          .paginate(page: params[:page], per_page: 20)
+                          .paginate(page: params[:page], per_page: 10)
     end
   end
 
@@ -75,6 +75,6 @@ class PostsController < ApplicationController
     Post.where(user: current_user.id)
         .union
         .in(user: current_user.following.collect(&:id))
-        .paginate(page: params[:page], per_page: 20)
+        .paginate(page: params[:page], per_page: 10)
   end
 end
