@@ -4,7 +4,7 @@ class User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :rememberable, :trackable, :validatable
 
   ## Database authenticatable
   field :email,              type: String, default: ''
@@ -64,7 +64,7 @@ class User
   end
 
   def like(post)
-    liked_posts << post
+    liked_posts << post unless likes?(post)
   end
 
   def unlike(post)

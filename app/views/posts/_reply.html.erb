@@ -2,6 +2,14 @@
   <strong><%= link_to reply.user.visible_name, user_path(reply.user.username) %></strong>
   <span><%= link_to "@#{reply.user.username}", user_path(reply.user.username) %></span>
   <span><%= display_date(reply.created_at) %></span>
+  <span><%= reply.liked_by.count %> likes</span>
+  <span>
+    <% if current_user.likes?(reply) %>
+      <%= link_to "Unlike", post_unlike_path(reply), method: :delete %>
+    <% else %>
+      <%= link_to "Like", post_like_path(reply), method: :post %>
+    <% end %>
+  </span>
   <div>
     <% if reply.image.exists? %>
       <div class="pull-left">
