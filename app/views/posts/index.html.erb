@@ -15,7 +15,9 @@
 
 <% if @posts %>
   <%= render @posts %>
-  <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+  <div class="text-center">
+    <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+  </div>
 <% else %>
   <div class="row">
     <div class="col-xs-12">
