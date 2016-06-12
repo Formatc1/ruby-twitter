@@ -40,6 +40,9 @@ gem 'bootstrap-sass'
 gem 'will_paginate_mongoid'
 gem 'will_paginate-bootstrap'
 
+#for test coverage
+gem 'simplecov', :require => false, :group => :test
+
 #for Windows
 gem 'tzinfo-data'
 
